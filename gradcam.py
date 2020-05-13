@@ -39,6 +39,6 @@ def generate_heatmap(original_image, cam):
         cv2.cvtColor(
             original_image,
             cv2.COLOR_RGB2BGR
-        ), 0.5, cam, 1, 0
+        ), 0.4, cam, 0.6, 0
     )
     return cam, cam_overlayed
