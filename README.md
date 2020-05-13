@@ -1,6 +1,9 @@
 # GradCam
 
-Tensorflow 2.2.0 Implementation of [Grad-CAM: Visual Explanations from Deep Networks
+![](https://mybinder.org/v2/gh/soumik12345/GradCam/master)
+[![HitCount](http://hits.dwyl.com/soumik12345/GradCam.svg)](http://hits.dwyl.com/soumik12345/GradCam)
+
+Tensorflow 2.2.0 Implementation of **Gradient Class Activation Maps** or **GradCam** as proposed by the paper [Grad-CAM: Visual Explanations from Deep Networks
 via Gradient-based Localization](https://arxiv.org/pdf/1610.02391.pdf).
 
 ## Results
