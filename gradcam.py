@@ -26,6 +26,7 @@ def generate_cam(image_file, model, layer_name, class_index):
     cam = np.ones(output.shape[0: 2], dtype=np.float32)
     for i, w in enumerate(weights):
         cam += w * output[:, :, i]
+    del grad_model
     return original_image, cam
 
 
