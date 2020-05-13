@@ -4,3 +4,5 @@ env/
 .ipynb_checkpoints/
 .DS_Store
 assets/.DS_Store
+*.mp4
+*.avi

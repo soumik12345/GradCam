@@ -3,6 +3,11 @@
 Tensorflow 2.2.0 Implementation of [Grad-CAM: Visual Explanations from Deep Networks
 via Gradient-based Localization](https://arxiv.org/pdf/1610.02391.pdf).
 
+<p align="center">
+    <img src="./assets/cat_vgg19.gif">
+    <figcaption>Cats through the eyes of VGG19</figcaption>
+</p>
+
 ## VGG16
 
 ![](./assets/plots/cat_vgg16.png)
