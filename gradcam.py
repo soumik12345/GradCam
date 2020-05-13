@@ -4,8 +4,7 @@ import tensorflow as tf
 from utils import read_image
 
 
-def generate_cam(image_file, model, layer_name, class_index, image_size=224):
-    image, original_image = read_image(image_file, image_size=image_size)
+def get_grad_model(model, layer_name):
     grad_model = model(weights='imagenet', include_top=True)
     grad_model = tf.keras.models.Model(
         [grad_model.inputs],
@@ -14,6 +13,11 @@ def generate_cam(image_file, model, layer_name, class_index, image_size=224):
             grad_model.output
         ]
     )
+    return grad_model
+
+
+def generate_cam(image_file, grad_model, class_index, image_size=224):
+    image, original_image = read_image(image_file, image_size=image_size)
     with tf.GradientTape() as tape:
         conv_outputs, predictions = grad_model(image)
         loss = predictions[:, class_index]
