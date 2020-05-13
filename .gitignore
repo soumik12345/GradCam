@@ -2,3 +2,5 @@ __pycache__/
 env/
 .idea/
 .ipynb_checkpoints/
+.DS_Store
+assets/.DS_Store
