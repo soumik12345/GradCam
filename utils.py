@@ -4,9 +4,11 @@ from tensorflow import keras
 from matplotlib import pyplot as plt
 
 
-def read_image(file_path):
+def read_image(file_path, image_size):
     original_image = np.array(Image.open(file_path))
-    image = keras.preprocessing.image.load_img(file_path, target_size=(224, 224))
+    image = keras.preprocessing.image.load_img(
+        file_path, target_size=(image_size, image_size)
+    )
     image = np.array([keras.preprocessing.image.img_to_array(image)])
     return image, original_image
 
