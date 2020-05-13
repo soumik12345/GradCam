@@ -34,11 +34,11 @@ def generate_heatmap(original_image, cam):
     cam = np.maximum(cam, 0)
     heatmap = (cam - cam.min()) / (cam.max() - cam.min())
     cam = cv2.applyColorMap(np.uint8(255 * heatmap), cv2.COLORMAP_JET)
-    original_image = np.array(original_image)
+    original_image = cv2.resize(np.array(original_image), (224, 224))
     cam_overlayed = cv2.addWeighted(
         cv2.cvtColor(
-            cv2.resize(original_image, (224, 224)),
+            original_image,
             cv2.COLOR_RGB2BGR
         ), 0.5, cam, 1, 0
     )
-    return cam, cam_overlayed
+    return original_image, cam_overlayed
