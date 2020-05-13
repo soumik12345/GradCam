@@ -41,4 +41,4 @@ def generate_heatmap(original_image, cam):
             cv2.COLOR_RGB2BGR
         ), 0.5, cam, 1, 0
     )
-    return original_image, cam_overlayed
+    return cam, cam_overlayed
