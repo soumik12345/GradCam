@@ -5,7 +5,7 @@ import tensorflow as tf
 from utils import get_prediction
 from plotly import express as px
 from imagenet_labels import IMAGENET_LABELS
-from gradcam import generate_cam, generate_heatmap
+from gradcam import GradCam
 
 
 def visualize_classification_prediction(prediction):
@@ -56,7 +56,9 @@ def run_app():
             'VGG16': [
                 tf.keras.applications.vgg16.VGG16,
                 tf.keras.applications.vgg16.preprocess_input,
-                tf.keras.applications.vgg16.decode_predictions
+                tf.keras.applications.vgg16.decode_predictions,
+                'block5_conv3', (224, 224),
+                ['block5_pool', 'flatten', 'fc1', 'fc2', 'predictions']
             ],
             'VGG19': [
                 tf.keras.applications.vgg19.VGG19,
@@ -75,8 +77,16 @@ def run_app():
             classify_button = st.button('Classify')
 
             if classify_button:
+                (
+                    model, preprocess_function, decode_function,
+                    last_layer, size, classifier_layers
+                ) = model_dict[model_option]
+                grad_cam = GradCam(
+                    model, preprocess_function, decode_function, last_layer=last_layer,
+                    classifier_layers=classifier_layers, size=size
+                )
 
-                prediction = get_prediction(image_path, model_dict, model_option)
+                prediction = grad_cam.get_prediction(image_path)
                 st.markdown(
                     '<hr><h3>Prediction Probablities</h3><br>',
                     unsafe_allow_html=True
@@ -85,8 +95,6 @@ def run_app():
                     visualize_classification_prediction(prediction),
                     use_container_width=True
                 )
-
-                st.sidebar.text(get_imagenet_id(prediction[0][0][1]))
 
 
 run_app()

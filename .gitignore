@@ -6,3 +6,5 @@ env/
 assets/.DS_Store
 *.mp4
 *.avi
+dump.txt
+test.py
