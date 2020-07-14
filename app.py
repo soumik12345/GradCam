@@ -1,11 +1,11 @@
+import cv2
 import pandas as pd
 from PIL import Image
 import streamlit as st
 import tensorflow as tf
-from utils import get_prediction
+from gradcam import GradCam
 from plotly import express as px
 from imagenet_labels import IMAGENET_LABELS
-from gradcam import GradCam
 
 
 def visualize_classification_prediction(prediction):
@@ -95,6 +95,11 @@ def run_app():
                     visualize_classification_prediction(prediction),
                     use_container_width=True
                 )
+
+                gradcam_heatmap = grad_cam.apply_gradcam(grad_cam.get_tensor(image_path))
+                overlayed_image = grad_cam.get_overlayed_image(image_path, gradcam_heatmap)
+
+                st.image(overlayed_image.resize((300, 300)))
 
 
 run_app()
