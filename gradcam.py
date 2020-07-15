@@ -15,16 +15,13 @@ class GradCam:
         self.classifier_layers = classifier_layers
         self.size = size
 
-    def get_tensor(self, image_path):
-        image = tf.keras.preprocessing.image.load_img(
-            image_path, target_size=self.size
-        )
+    def get_tensor(self, image):
         image = tf.keras.preprocessing.image.img_to_array(image)
         image = np.expand_dims(image, axis=0)
         return image
 
-    def get_prediction(self, image_path):
-        image = self.get_tensor(image_path)
+    def get_prediction(self, image):
+        image = self.get_tensor(image)
         image = self.preprocess_function(image)
         prediction = self.model.predict(image)
         prediction = self.decode_prediction_function(prediction)

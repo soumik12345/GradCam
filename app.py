@@ -26,12 +26,6 @@ def visualize_classification_prediction(prediction):
     return figure
 
 
-def get_imagenet_id(class_name: str) -> int:
-    for _id in range(1000):
-        if IMAGENET_LABELS[_id] == class_name.replace('_', ' '):
-            return _id
-
-
 def run_app():
     st.markdown(
         '<h1>GradCam</h1><hr><br>',
@@ -39,8 +33,8 @@ def run_app():
     )
 
     # ./assets/cat_1.jpg
-    image_path = st.sidebar.text_input('Enter Absolute Path of Image', '')
-    if image_path != '':
+    image_path = st.sidebar.file_uploader('Please Select a File')
+    if image_path is not None:
         try:
             image_pil = Image.open(image_path).resize((224, 224))
             st.image(image_pil, caption='Input Image (File: {})'.format(image_path))
@@ -85,8 +79,7 @@ def run_app():
                     model, preprocess_function, decode_function, last_layer=last_layer,
                     classifier_layers=classifier_layers, size=size
                 )
-
-                prediction = grad_cam.get_prediction(image_path)
+                prediction = grad_cam.get_prediction(image_pil)
                 st.markdown(
                     '<hr><h3>Prediction Probablities</h3><br>',
                     unsafe_allow_html=True
@@ -96,10 +89,10 @@ def run_app():
                     use_container_width=True
                 )
 
-                gradcam_heatmap = grad_cam.apply_gradcam(grad_cam.get_tensor(image_path))
-                overlayed_image = grad_cam.get_overlayed_image(image_path, gradcam_heatmap)
-
-                st.image(overlayed_image.resize((300, 300)))
+                # gradcam_heatmap = grad_cam.apply_gradcam(grad_cam.get_tensor(image_path))
+                # overlayed_image = grad_cam.get_overlayed_image(image_path, gradcam_heatmap)
+                #
+                # st.image(overlayed_image.resize((300, 300)))
 
 
 run_app()
