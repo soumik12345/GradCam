@@ -1,11 +1,10 @@
-import cv2
 import pandas as pd
 from PIL import Image
 import streamlit as st
 import tensorflow as tf
 from gradcam import GradCam
 from plotly import express as px
-from imagenet_labels import IMAGENET_LABELS
+from utils import get_overlayed_image
 
 
 def visualize_classification_prediction(prediction):
@@ -28,7 +27,7 @@ def visualize_classification_prediction(prediction):
 
 def run_app():
     st.markdown(
-        '<h1>GradCam</h1><hr><br>',
+        '<h1>GradCam Application</h1><hr><br>',
         unsafe_allow_html=True
     )
 
@@ -36,8 +35,11 @@ def run_app():
     image_path = st.sidebar.file_uploader('Please Select a File')
     if image_path is not None:
         try:
-            image_pil = Image.open(image_path).resize((224, 224))
-            st.image(image_pil, caption='Input Image (File: {})'.format(image_path))
+            image_pil = Image.open(image_path)
+            original_size = image_pil.size
+            height, width = original_size
+            image_pil = image_pil.resize((224, 224))
+            st.image(image_pil, caption='Input Image')
         except:
             st.error('Invalid File')
 
@@ -68,7 +70,7 @@ def run_app():
 
         if model_option in list(model_dict.keys()):
 
-            classify_button = st.button('Classify')
+            classify_button = st.sidebar.button('Classify')
 
             if classify_button:
                 (
@@ -89,10 +91,18 @@ def run_app():
                     use_container_width=True
                 )
 
-                # gradcam_heatmap = grad_cam.apply_gradcam(grad_cam.get_tensor(image_path))
-                # overlayed_image = grad_cam.get_overlayed_image(image_path, gradcam_heatmap)
-                #
-                # st.image(overlayed_image.resize((300, 300)))
+                st.markdown(
+                    '<hr><h3>GradCam</h3><br>',
+                    unsafe_allow_html=True
+                )
+
+                image_tensor = grad_cam.get_tensor(image_pil)
+                gradcam_heatmap = grad_cam.apply_gradcam(image_tensor)
+                overlayed_image = get_overlayed_image(
+                    image_pil, gradcam_heatmap, original_size, weightage=0.8
+                )
+
+                st.image(overlayed_image)
 
 
 run_app()

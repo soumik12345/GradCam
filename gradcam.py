@@ -27,6 +27,7 @@ class GradCam:
         return prediction
 
     def apply_gradcam(self, image_tensor):
+        image_tensor = self.preprocess_function(image_tensor)
         last_conv_layer = self.model.get_layer(self.last_layer)
         last_conv_layer_model = tf.keras.Model(self.model.inputs, last_conv_layer.output)
         classifier_input = tf.keras.Input(shape=last_conv_layer.output.shape[1:])
